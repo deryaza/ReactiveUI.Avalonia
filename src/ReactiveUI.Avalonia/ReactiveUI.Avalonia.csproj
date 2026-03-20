@@ -8,9 +8,11 @@
     <PackageTags>mvvm;reactiveui;rx;reactive extensions;observable;LINQ;events;frp;avalonia;net;netcore</PackageTags>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Avalonia" />
-    <PackageReference Include="ReactiveUI" />
+    <PackageReference Include="ReactiveUI"/>
   </ItemGroup>
+
+  <Import Project="../../../../build/ReferenceCoreLibraries.props"/>
+  <Import Project="../../../../build/BuildTargets.targets"/>
 
   <ItemGroup>
     <Using Include="System"/>
