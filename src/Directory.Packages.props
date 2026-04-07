@@ -2,7 +2,7 @@
   <PropertyGroup>
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
     <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
-    <AvaloniaVersion>11.3.12</AvaloniaVersion>
+    <AvaloniaVersion>11.3.13</AvaloniaVersion>
     <SplatVersion>19.3.1</SplatVersion>
   </PropertyGroup>
 
@@ -11,9 +11,9 @@
     <PackageVersion Include="Avalonia.Desktop" Version="$(AvaloniaVersion)" />
     <PackageVersion Include="Avalonia.Fonts.Inter" Version="$(AvaloniaVersion)" />
     <PackageVersion Include="Avalonia.Themes.Fluent" Version="$(AvaloniaVersion)" />
-    <PackageVersion Include="Microsoft.SourceLink.GitHub" Version="10.0.103" />
+    <PackageVersion Include="Microsoft.SourceLink.GitHub" Version="10.0.201" />
     <PackageVersion Include="Nerdbank.GitVersioning" Version="3.9.50" />
-    <PackageVersion Include="ReactiveUI" Version="23.1.8" />
+    <PackageVersion Include="ReactiveUI" Version="23.2.1" />
     <PackageVersion Include="Roslynator.Analyzers" Version="4.15.0" />
     <PackageVersion Include="Splat" Version="$(SplatVersion)" />
     <PackageVersion Include="Splat.Autofac" Version="$(SplatVersion)" />
@@ -22,7 +22,7 @@
     <PackageVersion Include="Splat.Microsoft.Extensions.DependencyInjection" Version="$(SplatVersion)" />
     <PackageVersion Include="Splat.Ninject" Version="$(SplatVersion)" />
     <PackageVersion Include="stylecop.analyzers" Version="1.2.0-beta.556" />
-    <PackageVersion Include="System.Collections.Immutable" Version="10.0.3" />
+    <PackageVersion Include="System.Collections.Immutable" Version="10.0.5" />
     <PackageVersion Include="System.IO.FileSystem.Primitives" Version="4.3.0" />
     <PackageVersion Include="System.Runtime.Serialization.Primitives" Version="4.3.0" />
   </ItemGroup>
@@ -30,7 +30,7 @@
   <ItemGroup Label="Test packages">
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.3.0" />
     <PackageVersion Include="Microsoft.Testing.Extensions.CodeCoverage" Version="18.5.2" />
-    <PackageVersion Include="TUnit" Version="1.19.16" />
-    <PackageVersion Include="Verify.TUnit" Version="31.13.2" />
+    <PackageVersion Include="TUnit" Version="1.24.0" />
+    <PackageVersion Include="Verify.TUnit" Version="31.14.0" />
   </ItemGroup>
 </Project>
