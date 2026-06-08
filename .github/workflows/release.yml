@@ -2,10 +2,34 @@ name: Release
 
 on:
   workflow_dispatch:
+    inputs:
+      bump:
+        description: 'Release level (ignored when versionOverride is set; leave blank to use versionOverride)'
+        required: false
+        type: choice
+        default: ''
+        options:
+          - ''
+          - patch
+          - minor
+          - major
+
+      versionOverride:
+        description: 'Exact version to stamp (e.g. 11.4.13) for an out-of-sequence / backport release (e.g. an 11.4.x patch while main is on 12.x). Overrides bump. Pair with sourceRef to build the matching maintenance branch.'
+        required: false
+        type: string
+        default: ''
+
+      sourceRef:
+        description: 'Optional git ref (tag/branch/SHA) to release from. Leave blank to release from this branch (normally main).'
+        required: false
+        type: string
+        default: ''
 
 permissions:
   contents: write
   id-token: write
+  packages: read
 
 jobs:
   release:
@@ -13,11 +37,16 @@ jobs:
     with:
       solutionFile: ReactiveUI.Avalonia.slnx
       installWorkloads: true
+      minverMinimumMajorMinor: '12.1'
+      # versionOverride wins: when it's set, force bump empty so the two version
+      # selectors can't collide (the reusable workflow rejects both at once).
+      bump: ${{ inputs.versionOverride != '' && '' || inputs.bump }}
+      versionOverride: ${{ inputs.versionOverride }}
+      ref: ${{ inputs.sourceRef }}
     secrets:
-      ES_USERNAME: ${{ secrets.ES_USERNAME }}
-      ES_PASSWORD: ${{ secrets.ES_PASSWORD }}
-      CREDENTIAL_ID: ${{ secrets.CREDENTIAL_ID }}
-      ES_TOTP_SECRET: ${{ secrets.ES_TOTP_SECRET }}
+      CERTUM_USER_ID: ${{ secrets.CERTUM_USER_ID }}
+      CERTUM_OTP_URI: ${{ secrets.CERTUM_OTP_URI }}
+      CERTUM_CERT_FINGERPRINT: ${{ secrets.CERTUM_CERT_FINGERPRINT }}
 
   publish-nuget:
     needs: release
@@ -37,7 +66,7 @@ jobs:
 
       - name: NuGet login (OIDC trusted publishing)
         id: nuget-login
-        uses: NuGet/login@v1
+        uses: NuGet/login@8d196754b4036150537f80ac539e15c2f1028841 # v1.2.0
         with:
           user: ${{ secrets.NUGET_USER }}
 
@@ -53,3 +82,5 @@ jobs:
     uses: reactiveui/actions-common/.github/workflows/workflow-common-create-release.yml@main
     with:
       version: ${{ needs.release.outputs.semver2 }}
+      tag: ${{ needs.release.outputs.tag }}
+      target: ${{ needs.release.outputs.sourceSha }}

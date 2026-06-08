@@ -83,13 +83,13 @@ public class AvaloniaUIThreadTestsMain
         var scheduler = AvaloniaScheduler.Instance;
         var actionExecuted = false;
 
+        // Tests run on the headless UI thread (see AvaloniaTestSession), so a zero-delay schedule
+        // executes synchronously and the assertion does not depend on dispatcher pumping latency.
         var disposable = scheduler.Schedule("test", TimeSpan.Zero, (s, state) =>
         {
             actionExecuted = true;
             return Disposable.Empty;
         });
-
-        Thread.Sleep(50);
 
         await Assert.That(actionExecuted).IsTrue();
         await Assert.That(disposable).IsNotNull();
