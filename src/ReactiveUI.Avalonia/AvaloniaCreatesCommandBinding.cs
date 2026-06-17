@@ -73,11 +73,6 @@ internal class AvaloniaCreatesCommandBinding : ICreatesCommandBinding
         IObservable<object?> commandParameter)
         where T : class
     {
-        if (command is null)
-        {
-            throw new ArgumentNullException(nameof(command));
-        }
-
         if (target is null)
         {
             throw new ArgumentNullException(nameof(target));
@@ -121,11 +116,6 @@ internal class AvaloniaCreatesCommandBinding : ICreatesCommandBinding
         string eventName)
         where T : class
     {
-        if (command is null)
-        {
-            throw new ArgumentNullException(nameof(command));
-        }
-
         if (target is null)
         {
             throw new ArgumentNullException(nameof(target));
@@ -137,6 +127,12 @@ internal class AvaloniaCreatesCommandBinding : ICreatesCommandBinding
         }
 
         var routedEvent = FindRoutedEvent(target, eventName) ?? throw new InvalidOperationException($"Routed Event {eventName} not found on {target.GetType().Name} element.");
+
+        if (command is null)
+        {
+            return null;
+        }
+
         return new RoutedEventSubscriptionClosure(element, routedEvent, command, commandParameter);
     }
 
