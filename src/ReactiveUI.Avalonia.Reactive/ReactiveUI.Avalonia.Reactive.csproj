@@ -6,12 +6,14 @@
     <DefineConstants>$(DefineConstants);REACTIVE_SHIM</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Avalonia" />
     <PackageReference Include="ReactiveUI.Reactive" ExcludeAssets="analyzers" />
     <PackageReference Include="ReactiveUI.Primitives.Reactive" ExcludeAssets="analyzers" />
     <PackageReference Include="ReactiveUI.Primitives.Avalonia.Reactive" ExcludeAssets="analyzers" />
     <PackageReference Include="ReactiveUI.Binding.Avalonia.Reactive" ExcludeAssets="analyzers" />
   </ItemGroup>
+  <Import Project="../../../../build/ReferenceCoreLibraries.props" />
+  <Import Project="../../../../build/BuildTargets.targets" />
+
   <ItemGroup>
     <Compile Include="..\ReactiveUI.Avalonia\*.cs" Exclude="..\ReactiveUI.Avalonia\bin\**;..\ReactiveUI.Avalonia\obj\**" Link="%(Filename)%(Extension)" />
   </ItemGroup>
