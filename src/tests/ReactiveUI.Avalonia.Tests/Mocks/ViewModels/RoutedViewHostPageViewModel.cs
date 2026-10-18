@@ -1,46 +1,67 @@
-// Copyright (c) 2019-2026 ReactiveUI and Avalonia Teams, and Contributors. All rights reserved.
-// Licensed under the MIT license.
+// Copyright (c) 2019-2026 ReactiveUI Association Incorporated. All rights reserved.
+// ReactiveUI Association Incorporated licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for full license information.
-
 using ReactiveUI;
 
 namespace ReactiveUIDemo.ViewModels;
 
-/// <summary>
-/// View model for the routed view host page in the demo application.
-/// </summary>
+/// <summary>View model for the routed view host page in the demo application.</summary>
 internal sealed class RoutedViewHostPageViewModel : ReactiveObject, IScreen
 {
-    /// <summary>
-    /// Initializes a new instance of the <see cref="RoutedViewHostPageViewModel"/> class.
-    /// </summary>
-    public RoutedViewHostPageViewModel()
+    /// <summary>Observes navigation results without requiring System.Reactive convenience overloads.</summary>
+    private static readonly NavigationObserver Observer = new();
+
+    /// <summary>Initializes a new instance of the <see cref="RoutedViewHostPageViewModel"/> class.</summary>
+    private RoutedViewHostPageViewModel()
     {
-        Foo = new(this);
-        Bar = new(this);
-        Router.Navigate.Execute(Foo);
     }
 
     /// <inheritdoc/>
     public RoutingState Router { get; } = new();
 
-    /// <summary>
-    /// Gets the Foo view model.
-    /// </summary>
-    public FooViewModel Foo { get; }
+    /// <summary>Gets the Foo view model.</summary>
+    internal FooViewModel Foo { get; private set; } = null!;
 
-    /// <summary>
-    /// Gets the Bar view model.
-    /// </summary>
-    public BarViewModel Bar { get; }
+    /// <summary>Gets the Bar view model.</summary>
+    internal BarViewModel Bar { get; private set; } = null!;
 
-    /// <summary>
-    /// Navigates to the Foo view.
-    /// </summary>
-    public void ShowFoo() => Router.Navigate.Execute(Foo);
+    /// <summary>Creates an initialized routed view-host page view model.</summary>
+    /// <returns>The initialized view model.</returns>
+    internal static RoutedViewHostPageViewModel Create()
+    {
+        var viewModel = new RoutedViewHostPageViewModel();
+        viewModel.Initialize();
+        return viewModel;
+    }
 
-    /// <summary>
-    /// Navigates to the Bar view.
-    /// </summary>
-    public void ShowBar() => Router.Navigate.Execute(Bar);
+    /// <summary>Navigates to the Foo view.</summary>
+    internal void ShowFoo() => _ = Router.Navigate.Execute(Foo).Subscribe(Observer);
+
+    /// <summary>Navigates to the Bar view.</summary>
+    internal void ShowBar() => _ = Router.Navigate.Execute(Bar).Subscribe(Observer);
+
+    /// <summary>Initializes routing after construction has completed.</summary>
+    private void Initialize()
+    {
+        Foo = new(this);
+        Bar = new(this);
+        _ = Router.Navigate.Execute(Foo).Subscribe(Observer);
+    }
+
+    /// <summary>Forwards navigation errors while otherwise observing command completion.</summary>
+    private sealed class NavigationObserver : IObserver<IRoutableViewModel>
+    {
+        /// <inheritdoc/>
+        public void OnCompleted()
+        {
+        }
+
+        /// <inheritdoc/>
+        public void OnError(Exception error) => System.Runtime.ExceptionServices.ExceptionDispatchInfo.Capture(error).Throw();
+
+        /// <inheritdoc/>
+        public void OnNext(IRoutableViewModel value)
+        {
+        }
+    }
 }

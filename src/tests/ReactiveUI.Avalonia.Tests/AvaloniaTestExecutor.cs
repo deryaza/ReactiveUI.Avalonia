@@ -1,55 +1,53 @@
-// Copyright (c) 2019-2026 ReactiveUI and Avalonia Teams, and Contributors. All rights reserved.
-// Licensed under the MIT license.
+// Copyright (c) 2019-2026 ReactiveUI Association Incorporated. All rights reserved.
+// ReactiveUI Association Incorporated licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for full license information.
-
+using ReactiveUI.Binding.Avalonia;
 using ReactiveUI.Builder;
 using Splat;
 using TUnit.Core.Interfaces;
 
 namespace ReactiveUI.Avalonia.Tests;
 
-/// <summary>
-/// Test executor that provides AppBuilder lifecycle management for each test.
-/// Resets and rebuilds ReactiveUI state before each test, and cleans up after.
-/// </summary>
+/// <summary>Test executor that provides AppBuilder lifecycle management for each test. Resets and rebuilds ReactiveUI state before each test, and cleans up after.</summary>
 public class AvaloniaTestExecutor : ITestExecutor
 {
     /// <inheritdoc/>
-    public async ValueTask ExecuteTest(TestContext context, Func<ValueTask> testAction)
+    public async ValueTask ExecuteTest(TestContext context, Func<ValueTask> action)
     {
-        ArgumentNullException.ThrowIfNull(testAction);
+        ArgumentNullException.ThrowIfNull(action);
 
         // Run the test body on the shared headless UI thread so dispatcher-dependent code
         // (e.g. AvaloniaScheduler) behaves deterministically. See AvaloniaTestSession.
-        await AvaloniaTestSession.Instance.Dispatch(
+        _ = await AvaloniaTestSession.Instance.Dispatch(
             async () =>
             {
                 ReactiveUIBuilder.ResetBuilderStateForTests();
 
-                AppLocator.CurrentMutable.CreateReactiveUIBuilder()
-                    .WithRegistration(splat =>
+                _ = AppLocator.CurrentMutable.CreateReactiveUIBuilder()
+                    .WithRegistration(static splat =>
                     {
                         splat.RegisterConstant<IActivationForViewFetcher>(new AvaloniaActivationForViewFetcher());
                         splat.RegisterConstant<IPropertyBindingHook>(new AutoDataTemplateBindingHook());
-                        splat.RegisterConstant<ICreatesCommandBinding>(new AvaloniaCreatesCommandBinding());
-                        splat.RegisterConstant<ICreatesObservableForProperty>(new AvaloniaObjectObservableForProperty());
                     })
+                    .UsingSplatModule(new AvaloniaBindingModule())
                     .WithSuspensionHost()
                     .WithCoreServices()
                     .BuildApp();
 
                 try
                 {
-                    await testAction();
+                    await action();
                 }
                 finally
                 {
                     ReactiveUIBuilder.ResetBuilderStateForTests();
 
-                    AppLocator.CurrentMutable.CreateReactiveUIBuilder()
+                    _ = AppLocator.CurrentMutable.CreateReactiveUIBuilder()
                         .WithCoreServices()
                         .BuildApp();
                 }
+
+                return true;
             },
             CancellationToken.None);
     }

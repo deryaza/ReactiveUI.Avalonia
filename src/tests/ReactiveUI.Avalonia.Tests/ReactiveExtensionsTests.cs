@@ -1,19 +1,14 @@
-// Copyright (c) 2019-2026 ReactiveUI and Avalonia Teams, and Contributors. All rights reserved.
-// Licensed under the MIT license.
+// Copyright (c) 2019-2026 ReactiveUI Association Incorporated. All rights reserved.
+// ReactiveUI Association Incorporated licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for full license information.
-
 using System.Reflection;
 
 namespace ReactiveUI.Avalonia.Tests;
 
-/// <summary>
-/// Tests for verifying the public API surface of reactive extension types.
-/// </summary>
+/// <summary>Tests for verifying the public API surface of reactive extension types.</summary>
 public class ReactiveExtensionsTests
 {
-    /// <summary>
-    /// Verifies that AvaloniaObjectReactiveExtensions is a static class.
-    /// </summary>
+    /// <summary>Verifies that AvaloniaObjectReactiveExtensions is a static class.</summary>
     /// <returns>A task representing the asynchronous test operation.</returns>
     [Test]
     public async Task AvaloniaObjectReactiveExtensions_IsStaticClass()
@@ -24,55 +19,51 @@ public class ReactiveExtensionsTests
         await Assert.That(type.IsSealed).IsTrue();
     }
 
-    /// <summary>
-    /// Verifies that the GetSubject extension method exists.
-    /// </summary>
+    /// <summary>Verifies that the GetSubject extension method exists.</summary>
     /// <returns>A task representing the asynchronous test operation.</returns>
     [Test]
     public async Task AvaloniaObjectReactiveExtensions_HasGetSubjectMethod()
     {
-        var type = typeof(AvaloniaObjectReactiveExtensions);
-        var methods = type.GetMethods(BindingFlags.Public | BindingFlags.Static);
+        var methods = typeof(AvaloniaObjectReactiveExtensions).GetMethods(BindingFlags.Public | BindingFlags.Static);
 
         var hasGetSubjectMethod = false;
         foreach (var method in methods)
         {
-            if (method.Name == "GetSubject")
+            if (method.Name != "GetSubject")
             {
-                hasGetSubjectMethod = true;
-                break;
+                continue;
             }
+
+            hasGetSubjectMethod = true;
+            break;
         }
 
         await Assert.That(hasGetSubjectMethod).IsTrue();
     }
 
-    /// <summary>
-    /// Verifies that the GetBindingSubject extension method exists.
-    /// </summary>
+    /// <summary>Verifies that the GetBindingSubject extension method exists.</summary>
     /// <returns>A task representing the asynchronous test operation.</returns>
     [Test]
     public async Task AvaloniaObjectReactiveExtensions_HasGetBindingSubjectMethod()
     {
-        var type = typeof(AvaloniaObjectReactiveExtensions);
-        var methods = type.GetMethods(BindingFlags.Public | BindingFlags.Static);
+        var methods = typeof(AvaloniaObjectReactiveExtensions).GetMethods(BindingFlags.Public | BindingFlags.Static);
 
         var hasGetBindingSubjectMethod = false;
         foreach (var method in methods)
         {
-            if (method.Name == "GetBindingSubject")
+            if (method.Name != "GetBindingSubject")
             {
-                hasGetBindingSubjectMethod = true;
-                break;
+                continue;
             }
+
+            hasGetBindingSubjectMethod = true;
+            break;
         }
 
         await Assert.That(hasGetBindingSubjectMethod).IsTrue();
     }
 
-    /// <summary>
-    /// Verifies that AutoDataTemplateBindingHook type exists and is a class.
-    /// </summary>
+    /// <summary>Verifies that AutoDataTemplateBindingHook type exists and is a class.</summary>
     /// <returns>A task representing the asynchronous test operation.</returns>
     [Test]
     public async Task AutoDataTemplateBindingHook_TypeExists()
@@ -82,9 +73,7 @@ public class ReactiveExtensionsTests
         await Assert.That(type.IsClass).IsTrue();
     }
 
-    /// <summary>
-    /// Verifies that AvaloniaActivationForViewFetcher type exists and is a class.
-    /// </summary>
+    /// <summary>Verifies that AvaloniaActivationForViewFetcher type exists and is a class.</summary>
     /// <returns>A task representing the asynchronous test operation.</returns>
     [Test]
     public async Task AvaloniaActivationForViewFetcher_TypeExists()
@@ -94,9 +83,7 @@ public class ReactiveExtensionsTests
         await Assert.That(type.IsClass).IsTrue();
     }
 
-    /// <summary>
-    /// Verifies that AutoSuspendHelper type exists and is a class.
-    /// </summary>
+    /// <summary>Verifies that AutoSuspendHelper type exists and is a class.</summary>
     /// <returns>A task representing the asynchronous test operation.</returns>
     [Test]
     public async Task AutoSuspendHelper_TypeExists()
@@ -106,39 +93,35 @@ public class ReactiveExtensionsTests
         await Assert.That(type.IsClass).IsTrue();
     }
 
-    /// <summary>
-    /// Verifies that AutoDataTemplateBindingHook has the ExecuteHook method.
-    /// </summary>
+    /// <summary>Verifies that AutoDataTemplateBindingHook has the ExecuteHook method.</summary>
     /// <returns>A task representing the asynchronous test operation.</returns>
     [Test]
     public async Task AutoDataTemplateBindingHook_HasExpectedMethods()
     {
-        var type = typeof(AutoDataTemplateBindingHook);
-        var methods = type.GetMethods(BindingFlags.Public | BindingFlags.Instance);
+        var methods = typeof(AutoDataTemplateBindingHook).GetMethods(BindingFlags.Public | BindingFlags.Instance);
 
         var hasExecuteHookMethod = false;
 
         foreach (var method in methods)
         {
-            if (method.Name == "ExecuteHook")
+            if (method.Name != "ExecuteHook")
             {
-                hasExecuteHookMethod = true;
-                break;
+                continue;
             }
+
+            hasExecuteHookMethod = true;
+            break;
         }
 
         await Assert.That(hasExecuteHookMethod).IsTrue();
     }
 
-    /// <summary>
-    /// Verifies that AvaloniaActivationForViewFetcher has the expected methods.
-    /// </summary>
+    /// <summary>Verifies that AvaloniaActivationForViewFetcher has the expected methods.</summary>
     /// <returns>A task representing the asynchronous test operation.</returns>
     [Test]
     public async Task AvaloniaActivationForViewFetcher_HasExpectedMethods()
     {
-        var type = typeof(AvaloniaActivationForViewFetcher);
-        var methods = type.GetMethods(BindingFlags.Public | BindingFlags.Instance);
+        var methods = typeof(AvaloniaActivationForViewFetcher).GetMethods(BindingFlags.Public | BindingFlags.Instance);
 
         var hasGetAffinityForViewMethod = false;
         var hasGetActivationForViewMethod = false;
@@ -159,15 +142,12 @@ public class ReactiveExtensionsTests
         await Assert.That(hasGetActivationForViewMethod).IsTrue();
     }
 
-    /// <summary>
-    /// Verifies that AvaloniaObjectReactiveExtensions has public extension methods.
-    /// </summary>
+    /// <summary>Verifies that AvaloniaObjectReactiveExtensions has public extension methods.</summary>
     /// <returns>A task representing the asynchronous test operation.</returns>
     [Test]
     public async Task ReactiveUIAvalonia_HasPublicExtensionMethods()
     {
-        var type = typeof(AvaloniaObjectReactiveExtensions);
-        var publicStaticMethods = type.GetMethods(BindingFlags.Public | BindingFlags.Static);
+        var publicStaticMethods = typeof(AvaloniaObjectReactiveExtensions).GetMethods(BindingFlags.Public | BindingFlags.Static);
 
         await Assert.That(publicStaticMethods.Length).IsGreaterThan(0);
 
@@ -175,19 +155,19 @@ public class ReactiveExtensionsTests
         foreach (var method in publicStaticMethods)
         {
             var extensionAttr = method.GetCustomAttribute<System.Runtime.CompilerServices.ExtensionAttribute>();
-            if (extensionAttr == null)
+            if (extensionAttr is not null)
             {
-                allAreExtensions = false;
-                break;
+                continue;
             }
+
+            allAreExtensions = false;
+            break;
         }
 
         await Assert.That(allAreExtensions).IsTrue();
     }
 
-    /// <summary>
-    /// Verifies that AutoSuspendHelper is a sealed, non-abstract class with constructors.
-    /// </summary>
+    /// <summary>Verifies that AutoSuspendHelper is a sealed, non-abstract class with constructors.</summary>
     /// <returns>A task representing the asynchronous test operation.</returns>
     [Test]
     public async Task AutoSuspendHelper_HasExpectedProperties()
@@ -202,19 +182,14 @@ public class ReactiveExtensionsTests
         await Assert.That(constructors.Length).IsGreaterThan(0);
     }
 
-    /// <summary>
-    /// Verifies that public types have parameterless constructors.
-    /// </summary>
+    /// <summary>Verifies that public types have parameterless constructors.</summary>
     /// <returns>A task representing the asynchronous test operation.</returns>
     [Test]
     public async Task PublicTypes_HaveParameterlessConstructors()
     {
-        var autoDataTemplateHookType = typeof(AutoDataTemplateBindingHook);
-        var constructors = autoDataTemplateHookType.GetConstructors();
+        var constructors = typeof(AutoDataTemplateBindingHook).GetConstructors();
         await Assert.That(constructors.Length).IsGreaterThan(0);
-
-        var activationFetcherType = typeof(AvaloniaActivationForViewFetcher);
-        var activationConstructors = activationFetcherType.GetConstructors();
+        var activationConstructors = typeof(AvaloniaActivationForViewFetcher).GetConstructors();
         await Assert.That(activationConstructors.Length).IsGreaterThan(0);
     }
 }

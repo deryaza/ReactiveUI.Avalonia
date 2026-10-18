@@ -27,7 +27,19 @@ Install the packages that match your preferred dependency injection container. T
   - [![ReactiveUI.Avalonia.Microsoft.Extensions.DependencyInjection](https://img.shields.io/nuget/v/ReactiveUI.Avalonia.Microsoft.Extensions.DependencyInjection.svg)](https://www.nuget.org/packages/ReactiveUI.Avalonia.Microsoft.Extensions.DependencyInjection)
   - [![ReactiveUI.Avalonia.Ninject](https://img.shields.io/nuget/v/ReactiveUI.Avalonia.Ninject.svg)](https://www.nuget.org/packages/ReactiveUI.Avalonia.Ninject)
 
-All libraries target multiple frameworks including .NET Standard 2.0 and modern .NET (.NET 8/9/10) for broad compatibility.
+All libraries target .NET 8, 9, 10, and 11. The core and DI packages also have `.Reactive` variants for applications using System.Reactive; new applications can use the lean packages backed by ReactiveUI.Primitives.
+
+## Runnable showcase
+
+The [example application](src/examples/ReactiveUI.Avalonia.Example/README.md) demonstrates navigation, reactive bindings, commands, activation, interactions, reusable metric cards, and live local process measurements using the lean packages.
+
+From `src`, run:
+
+```powershell
+dotnet run --project examples/ReactiveUI.Avalonia.Example/ReactiveUI.Avalonia.Example.csproj -c Release
+```
+
+The example includes headless TUnit tests so its behavior can be checked alongside the package tests.
 
 ---
 ## Recommended setup (ReactiveUIBuilder)
@@ -140,7 +152,7 @@ public static AppBuilder BuildAvaloniaApp() => AppBuilder
 ```
 
 Notes
-- `UseReactiveUI` sets `RxApp.MainThreadScheduler` to `AvaloniaScheduler.Instance` and registers the Avalonia-specific activation and binding services.
+- `UseReactiveUI` registers the package-owned Avalonia scheduler from `ReactiveUI.Primitives.Avalonia` (or `ReactiveUI.Primitives.Avalonia.Reactive`) as ReactiveUI's main-thread sequencer/scheduler, and registers the Avalonia-specific activation and binding services.
 - `RegisterReactiveUIViewsFromEntryAssembly()` scans your entry assembly and registers any types implementing `IViewFor<TViewModel>` for view location/navigation.
 - For existing apps, you can keep using `UseReactiveUI()` without a DI container and register services into `Splat` directly if you prefer.
 
@@ -230,9 +242,8 @@ Key extension methods on `AppBuilder`:
 Important types registered by default:
 - `IActivationForViewFetcher` ? `AvaloniaActivationForViewFetcher`
 - `IPropertyBindingHook` ? `AutoDataTemplateBindingHook`
-- `ICreatesCommandBinding` ? `AvaloniaCreatesCommandBinding`
-- `ICreatesObservableForProperty` ? `AvaloniaObjectObservableForProperty`
-- `RxApp.MainThreadScheduler` set to `AvaloniaScheduler.Instance`
+- `AvaloniaBindingModule` from `ReactiveUI.Binding.Avalonia`, which registers the property observer, the command binder and the view thread invoker. Those types live in that package; see its [threading page](https://www.reactiveui.net/docs/binding/threading/avalonia/).
+- The main-thread sequencer/scheduler set to the matching `ReactiveUI.Primitives.Avalonia.*` `AvaloniaScheduler.Instance`
 
 Controls and helpers:
 - `RoutedViewHost` — view host that displays the view for the current `RoutingState`
@@ -416,9 +427,12 @@ public class AppViewModel : ReactiveObject, IScreen
 {
     public RoutingState Router { get; } = new RoutingState();
 
-    public AppViewModel() => Router.Navigate.Execute(new MyViewModel());
+    public AppViewModel() => _ = Router.Navigate.Execute(new MyViewModel()).Subscribe();
 }
 ```
+
+`ReactiveCommand.Execute` returns a cold observable. Subscribe to or await the result; discarding it does not perform
+the navigation.
 
 ```xml
 <!-- MainWindow.axaml -->
@@ -457,6 +471,22 @@ We want to thank the following contributors and libraries that help make Reactiv
   - **ReactiveUI**: [ReactiveUI](https://github.com/reactiveui/reactiveui) - The core MVVM framework.
 
 ---
+
+## Sponsors
+
+[JetBrains](https://www.jetbrains.com/) gives ReactiveUI's maintainers licences for its tools through its
+[open source support programme](https://www.jetbrains.com/community/opensource/).
+[Anthropic](https://www.anthropic.com/) supports them with [Claude](https://claude.com/) through
+[Claude for Open Source](https://claude.com/contact-sales/claude-for-oss).
+[OpenAI](https://openai.com/) supports them with [Codex](https://openai.com/codex/) through
+[Codex for Open Source](https://developers.openai.com/community/codex-for-oss).
+
+[![JetBrains](https://raw.githubusercontent.com/reactiveui/website/main/docs/images/sponsors/jetbrains.svg)](https://www.jetbrains.com/)
+[![Claude by Anthropic](https://raw.githubusercontent.com/reactiveui/website/main/docs/images/sponsors/claude.svg)](https://claude.com/)
+[![OpenAI](https://raw.githubusercontent.com/reactiveui/website/main/docs/images/sponsors/openai.svg)](https://openai.com/codex/)
+
+See [our sponsors](https://www.reactiveui.net/sponsors/) for more information.
+JetBrains, Claude, Anthropic, OpenAI and Codex names and logos are trademarks of their respective owners.
 
 ## Sponsorship
 

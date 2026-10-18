@@ -1,19 +1,14 @@
-// Copyright (c) 2019-2026 ReactiveUI and Avalonia Teams, and Contributors. All rights reserved.
-// Licensed under the MIT license.
+// Copyright (c) 2019-2026 ReactiveUI Association Incorporated. All rights reserved.
+// ReactiveUI Association Incorporated licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for full license information.
-
 using Avalonia.Controls;
 
 namespace ReactiveUI.Avalonia.Tests;
 
-/// <summary>
-/// Tests for reactive control types and their type hierarchy.
-/// </summary>
+/// <summary>Tests for reactive control types and their type hierarchy.</summary>
 public class ReactiveControlsTests
 {
-    /// <summary>
-    /// Verifies that ReactiveUserControl type can be referenced without setup.
-    /// </summary>
+    /// <summary>Verifies that ReactiveUserControl type can be referenced without setup.</summary>
     /// <returns>A task representing the asynchronous test operation.</returns>
     [Test]
     public async Task ReactiveUserControl_CanBeCreatedWithoutSetup()
@@ -23,9 +18,7 @@ public class ReactiveControlsTests
         await Assert.That(controlType.IsClass).IsTrue();
     }
 
-    /// <summary>
-    /// Verifies that ReactiveWindow type can be referenced without setup.
-    /// </summary>
+    /// <summary>Verifies that ReactiveWindow type can be referenced without setup.</summary>
     /// <returns>A task representing the asynchronous test operation.</returns>
     [Test]
     public async Task ReactiveWindow_CanBeCreatedWithoutSetup()
@@ -35,9 +28,7 @@ public class ReactiveControlsTests
         await Assert.That(windowType.IsClass).IsTrue();
     }
 
-    /// <summary>
-    /// Verifies that ViewModelViewHost type exists.
-    /// </summary>
+    /// <summary>Verifies that ViewModelViewHost type exists.</summary>
     /// <returns>A task representing the asynchronous test operation.</returns>
     [Test]
     public async Task ViewModelViewHost_TypeExists()
@@ -47,9 +38,7 @@ public class ReactiveControlsTests
         await Assert.That(hostType.IsClass).IsTrue();
     }
 
-    /// <summary>
-    /// Verifies that RoutedViewHost type exists.
-    /// </summary>
+    /// <summary>Verifies that RoutedViewHost type exists.</summary>
     /// <returns>A task representing the asynchronous test operation.</returns>
     [Test]
     public async Task RoutedViewHost_TypeExists()
@@ -59,9 +48,7 @@ public class ReactiveControlsTests
         await Assert.That(hostType.IsClass).IsTrue();
     }
 
-    /// <summary>
-    /// Verifies that ReactiveUserControl inherits from UserControl.
-    /// </summary>
+    /// <summary>Verifies that ReactiveUserControl inherits from UserControl.</summary>
     /// <returns>A task representing the asynchronous test operation.</returns>
     [Test]
     public async Task ReactiveUserControl_InheritsFromUserControl()
@@ -71,10 +58,10 @@ public class ReactiveControlsTests
 
         var currentType = controlType.BaseType;
         var inheritsFromUserControl = false;
-        while (currentType != null && currentType != typeof(object))
+        while (currentType is not null && currentType != typeof(object))
         {
-            if (currentType == typeof(UserControl) ||
-                currentType.Name.Contains("UserControl"))
+            if (currentType == typeof(UserControl)
+                || currentType.Name.Contains("UserControl"))
             {
                 inheritsFromUserControl = true;
                 break;
@@ -86,9 +73,7 @@ public class ReactiveControlsTests
         await Assert.That(inheritsFromUserControl).IsTrue();
     }
 
-    /// <summary>
-    /// Verifies that ReactiveWindow inherits from Window.
-    /// </summary>
+    /// <summary>Verifies that ReactiveWindow inherits from Window.</summary>
     /// <returns>A task representing the asynchronous test operation.</returns>
     [Test]
     public async Task ReactiveWindow_InheritsFromWindow()
@@ -98,10 +83,10 @@ public class ReactiveControlsTests
 
         var currentType = windowType.BaseType;
         var inheritsFromWindow = false;
-        while (currentType != null && currentType != typeof(object))
+        while (currentType is not null && currentType != typeof(object))
         {
-            if (currentType == typeof(Window) ||
-                currentType.Name.Contains("Window"))
+            if (currentType == typeof(Window)
+                || currentType.Name.Contains("Window"))
             {
                 inheritsFromWindow = true;
                 break;
@@ -113,9 +98,7 @@ public class ReactiveControlsTests
         await Assert.That(inheritsFromWindow).IsTrue();
     }
 
-    /// <summary>
-    /// Verifies that ViewModelViewHost inherits from ContentControl.
-    /// </summary>
+    /// <summary>Verifies that ViewModelViewHost inherits from ContentControl.</summary>
     /// <returns>A task representing the asynchronous test operation.</returns>
     [Test]
     public async Task ViewModelViewHost_InheritsFromContentControl()
@@ -125,10 +108,10 @@ public class ReactiveControlsTests
 
         var currentType = hostType.BaseType;
         var inheritsFromContentControl = false;
-        while (currentType != null && currentType != typeof(object))
+        while (currentType is not null && currentType != typeof(object))
         {
-            if (currentType == typeof(ContentControl) ||
-                currentType.Name.Contains("ContentControl"))
+            if (currentType == typeof(ContentControl)
+                || currentType.Name.Contains("ContentControl"))
             {
                 inheritsFromContentControl = true;
                 break;
@@ -140,9 +123,7 @@ public class ReactiveControlsTests
         await Assert.That(inheritsFromContentControl).IsTrue();
     }
 
-    /// <summary>
-    /// Verifies that RoutedViewHost inherits from ContentControl.
-    /// </summary>
+    /// <summary>Verifies that RoutedViewHost inherits from ContentControl.</summary>
     /// <returns>A task representing the asynchronous test operation.</returns>
     [Test]
     public async Task RoutedViewHost_InheritsFromContentControl()
@@ -152,10 +133,10 @@ public class ReactiveControlsTests
 
         var currentType = hostType.BaseType;
         var inheritsFromContentControl = false;
-        while (currentType != null && currentType != typeof(object))
+        while (currentType is not null && currentType != typeof(object))
         {
-            if (currentType == typeof(ContentControl) ||
-                currentType.Name.Contains("ContentControl"))
+            if (currentType == typeof(ContentControl)
+                || currentType.Name.Contains("ContentControl"))
             {
                 inheritsFromContentControl = true;
                 break;
@@ -167,9 +148,7 @@ public class ReactiveControlsTests
         await Assert.That(inheritsFromContentControl).IsTrue();
     }
 
-    /// <summary>
-    /// Verifies that ReactiveUserControl is a generic type definition with one type argument.
-    /// </summary>
+    /// <summary>Verifies that ReactiveUserControl is a generic type definition with one type argument.</summary>
     /// <returns>A task representing the asynchronous test operation.</returns>
     [Test]
     public async Task ReactiveUserControl_IsGeneric()
@@ -181,9 +160,7 @@ public class ReactiveControlsTests
         await Assert.That(genericArguments.Length).IsEqualTo(1);
     }
 
-    /// <summary>
-    /// Verifies that ReactiveWindow is a generic type definition with one type argument.
-    /// </summary>
+    /// <summary>Verifies that ReactiveWindow is a generic type definition with one type argument.</summary>
     /// <returns>A task representing the asynchronous test operation.</returns>
     [Test]
     public async Task ReactiveWindow_IsGeneric()
@@ -195,9 +172,7 @@ public class ReactiveControlsTests
         await Assert.That(genericArguments.Length).IsEqualTo(1);
     }
 
-    /// <summary>
-    /// Verifies that ViewModelViewHost has the expected public properties.
-    /// </summary>
+    /// <summary>Verifies that ViewModelViewHost has the expected public properties.</summary>
     /// <returns>A task representing the asynchronous test operation.</returns>
     [Test]
     public async Task ViewModelViewHost_HasExpectedProperties()
@@ -214,9 +189,7 @@ public class ReactiveControlsTests
         await Assert.That(viewContractProp).IsNotNull();
     }
 
-    /// <summary>
-    /// Verifies that RoutedViewHost has the expected public properties.
-    /// </summary>
+    /// <summary>Verifies that RoutedViewHost has the expected public properties.</summary>
     /// <returns>A task representing the asynchronous test operation.</returns>
     [Test]
     public async Task RoutedViewHost_HasExpectedProperties()

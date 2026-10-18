@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AssemblyName>ReactiveUI.Avalonia.Example</AssemblyName>
+    <RootNamespace>ReactiveUI.Avalonia.Example</RootNamespace>
+    <PackageDescription>Shared showcase views, view models and services for the lean ReactiveUI.Avalonia integration.</PackageDescription>
+    <IsPackable>false</IsPackable>
+    <IsAotCompatible>false</IsAotCompatible>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Avalonia.Fonts.Inter" />
+    <PackageReference Include="Avalonia.Themes.Fluent" />
+    <PackageReference Include="ReactiveUI" />
+    <PackageReference Include="ReactiveUI.Primitives" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="ReactiveUI.Avalonia.Example.Tests" />
+    <ProjectReference Include="..\..\ReactiveUI.Avalonia\ReactiveUI.Avalonia.csproj" />
+    <ProjectReference Include="..\..\ReactiveUI.Avalonia.Microsoft.Extensions.DependencyInjection\ReactiveUI.Avalonia.Microsoft.Extensions.DependencyInjection.csproj" />
+  </ItemGroup>
+</Project>
