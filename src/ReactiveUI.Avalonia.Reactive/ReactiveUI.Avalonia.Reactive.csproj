@@ -6,7 +6,7 @@
     <DefineConstants>$(DefineConstants);REACTIVE_SHIM</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="ReactiveUI.Reactive" ExcludeAssets="analyzers" />
+    <ProjectReference Include="../../../../../ReactiveUI/src/ReactiveUI.Reactive/ReactiveUI.Reactive.csproj" />
     <PackageReference Include="ReactiveUI.Primitives.Reactive" ExcludeAssets="analyzers" />
     <PackageReference Include="ReactiveUI.Primitives.Avalonia.Reactive" ExcludeAssets="analyzers" />
     <PackageReference Include="ReactiveUI.Binding.Avalonia.Reactive" ExcludeAssets="analyzers" />
